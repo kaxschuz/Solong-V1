@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solong – Dein digitaler Nachlass</title>
+  <meta name="description" content="Solong hilft dir, alles Wichtige für deine Liebsten zu hinterlassen – Dokumente, Erinnerungen, Wünsche. Sicher, einfühlsam und rechtlich begleitet." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <!-- Plausible Analytics – DSGVO-konform, kein Cookie-Banner nötig -->
+  <!-- ⚠️ SETUP: "DEINE-DOMAIN.de" durch deine echte Domain ersetzen, sobald du unter app.plausible.io eine Website angelegt hast -->
+  <script defer data-domain="DEINE-DOMAIN.de" src="https://plausible.io/js/script.tagged-events.js"></script>
+  <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green-dark:   #2D6A4F;
+      --green-mid:    #40916C;
+      --green-soft:   #74C69D;
+      --green-light:  #B7E4C7;
+      --green-pale:   #D8F3DC;
+      --green-bg:     #EDF7F1;
+      --cream:        #FDFAF6;
+      --cream-dark:   #F5EFE6;
+      --white:        #FFFFFF;
+      --gray-text:    #3A3530;
+      --gray-muted:   #6E6560;
+      --gray-border:  #E4DDD5;
+      --warn-gold:    #92400E;
+      --font-serif:   'Lora', Georgia, 'Times New Roman', serif;
+      --font-sans:    'Inter', 'Segoe UI', system-ui, sans-serif;
+      --radius-lg:    .75rem;
+      --radius-xl:    1.25rem;
+      --shadow-sm:    0 1px 4px rgba(45,60,40,.07);
+      --shadow-md:    0 4px 18px rgba(45,60,40,.09);
+      --shadow-lg:    0 12px 40px rgba(45,60,40,.11);
+      --transition:   all .25s ease;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      color: var(--gray-text);
+      background: var(--cream);
+      line-height: 1.7;
+    }
+
+    img { max-width: 100%; display: block; }
+    a   { color: inherit; text-decoration: none; }
+
+    /* ── Layout helpers ── */
+    .container {
+      max-width: 1120px;
+      margin-inline: auto;
+      padding-inline: 1.5rem;
+    }
+    .section { padding-block: 5rem; }
+    .section--alt { background: var(--green-bg); }
+    .section--cream { background: var(--cream-dark); }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(253,250,246,.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--gray-border);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      gap: 1rem;
+    }
+    .nav-logo {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--green-dark);
+      letter-spacing: .01em;
+    }
+    .nav-logo span { color: var(--green-soft); }
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: transparent;
+      color: var(--green-dark);
+      font-size: .88rem;
+      font-weight: 600;
+      padding: .5rem 1.1rem;
+      border-radius: .4rem;
+      border: 1.5px solid var(--green-mid);
+      transition: var(--transition);
+    }
+    .nav-cta:hover { background: var(--green-mid); color: var(--white); }
+
+    /* ── Hero ── */
+    .hero {
+      background: var(--cream);
+      padding-block: 6rem 5rem;
+      position: relative;
+      border-bottom: 1px solid var(--gray-border);
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, var(--green-pale) 0%, transparent 65%);
+      top: -80px; right: -80px;
+      pointer-events: none;
+      opacity: .6;
+    }
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: var(--cream-dark);
+      color: var(--green-dark);
+      font-size: .78rem;
+      font-weight: 600;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      padding: .35rem .9rem;
+      border-radius: .35rem;
+      border: 1px solid var(--gray-border);
+      margin-bottom: 1.25rem;
+    }
+    .hero h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--green-dark);
+      margin-bottom: 1.25rem;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--green-mid);
+    }
+    .hero p {
+      font-size: 1.05rem;
+      color: var(--gray-muted);
+      max-width: 480px;
+      margin-bottom: 2rem;
+      line-height: 1.75;
+    }
+
+
+    /* ── Trust bar ── */
+    .trust-bar {
+      border-top: 1px solid var(--gray-border);
+      border-bottom: 1px solid var(--gray-border);
+      background: var(--cream-dark);
+      padding-block: 1.25rem;
+    }
+    .trust-bar-inner {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+    }
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--gray-muted);
+    }
+    .trust-item .icon {
+      width: 28px; height: 28px;
+      background: var(--green-pale);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--green-dark);
+      font-size: .9rem;
+      flex-shrink: 0;
+    }
+
+    /* ── Problem / Empathy section ── */
+    .empathy {
+      text-align: center;
+      max-width: 700px;
+      margin-inline: auto;
+    }
+    .section-label {
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--green-mid);
+      margin-bottom: .75rem;
+    }
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: clamp(1.6rem, 3vw, 2.3rem);
+      font-weight: 700;
+      line-height: 1.28;
+      color: var(--green-dark);
+      margin-bottom: 1rem;
+    }
+    .section-sub {
+      font-size: 1.05rem;
+      color: var(--gray-muted);
+      line-height: 1.75;
+    }
+
+    /* ── Features grid ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .feature-card {
+      background: var(--white);
+      border: 1px solid var(--gray-border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .feature-card:hover { border-color: var(--green-light); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .feature-icon {
+      width: 44px; height: 44px;
+      background: var(--cream-dark);
+      border-radius: .5rem;
+      border: 1px solid var(--gray-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+    }
+    .feature-card h3 {
+      font-family: var(--font-serif);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--green-dark);
+      margin-bottom: .5rem;
+    }
+    .feature-card p {
+      font-size: .88rem;
+      color: var(--gray-muted);
+      line-height: 1.7;
+    }
+
+    /* ── How it works ── */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+      position: relative;
+    }
+    .step {
+      text-align: center;
+    }
+    .step-num {
+      width: 48px; height: 48px;
+      background: var(--cream-dark);
+      color: var(--green-dark);
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      font-weight: 700;
+      border-radius: 50%;
+      border: 2px solid var(--green-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-inline: auto;
+      margin-bottom: 1rem;
+    }
+    .step h3 {
+      font-family: var(--font-serif);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--green-dark);
+      margin-bottom: .4rem;
+    }
+    .step p {
+      font-size: .88rem;
+      color: var(--gray-muted);
+    }
+
+    /* ── Bereaved access ── */
+    .access-card {
+      background: var(--green-dark);
+      color: var(--white);
+      border-radius: var(--radius-xl);
+      padding: 3rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+    .access-card h2 {
+      font-family: var(--font-serif);
+      font-size: 1.9rem;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 1rem;
+      color: var(--white);
+    }
+    .access-card p {
+      font-size: 1rem;
+      opacity: .8;
+      line-height: 1.7;
+    }
+    .access-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .access-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: .75rem;
+      padding: 1rem 1.25rem;
+    }
+    .access-step .num {
+      background: var(--green-soft);
+      color: var(--green-dark);
+      font-weight: 800;
+      font-size: .85rem;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .access-step .text strong {
+      display: block;
+      font-size: .95rem;
+      margin-bottom: .15rem;
+    }
+    .access-step .text span {
+      font-size: .83rem;
+      opacity: .72;
+    }
+
+    /* ── Privacy section ── */
+    .privacy-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .privacy-card {
+      background: var(--white);
+      border: 1.5px solid var(--green-light);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+    }
+    .privacy-card .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      background: var(--green-pale);
+      color: var(--green-dark);
+      font-size: .75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      padding: .25rem .75rem;
+      border-radius: 99px;
+      margin-bottom: 1rem;
+    }
+    .privacy-card {
+      background: var(--cream);
+    }
+    .privacy-card h3 {
+      font-family: var(--font-serif);
+      font-size: .98rem;
+      font-weight: 600;
+      color: var(--green-dark);
+      margin-bottom: .5rem;
+    }
+    .privacy-card p {
+      font-size: .87rem;
+      color: var(--gray-muted);
+      line-height: 1.65;
+    }
+
+    /* ── Final CTA ── */
+    .cta-section {
+      text-align: center;
+      background: var(--green-dark);
+      color: var(--white);
+      border-radius: var(--radius-xl);
+      padding: 4rem 2rem;
+      margin-block: 5rem;
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .cta-section h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .cta-section p {
+      opacity: .8;
+      font-size: 1.05rem;
+      max-width: 480px;
+      margin-inline: auto;
+      margin-bottom: 2rem;
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--gray-border);
+      padding-block: 2rem;
+      color: var(--gray-muted);
+      font-size: .85rem;
+    }
+    .footer-inner {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+    .footer-logo { font-family: var(--font-serif); font-weight: 700; color: var(--green-dark); font-size: 1.1rem; }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a:hover { color: var(--green-mid); }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+      .hero::before { display: none; }
+      .access-card { grid-template-columns: 1fr; padding: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ───────── Navigation ───────── -->
+  <nav>
+    <div class="container nav-inner">
+      <a href="#" class="nav-logo">So<span>long</span></a>
+      <a href="#features" class="nav-cta">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        Funktionen entdecken
+      </a>
+    </div>
+  </nav>
+
+  <!-- ───────── Hero ───────── -->
+  <section class="hero">
+    <div class="container" style="text-align:center;max-width:720px;">
+      <h1 style="font-size:clamp(2rem,4.5vw,3.2rem);font-weight:800;line-height:1.18;color:var(--green-dark);margin-bottom:1.25rem;letter-spacing:-.5px;">
+        Alles Wichtige.<br>An einem Ort.<br>Für die, die du <em style="font-style:normal;color:var(--green-mid);">liebst</em>.
+      </h1>
+      <p style="font-size:1.1rem;color:var(--gray-muted);max-width:540px;margin-inline:auto;margin-bottom:2rem;">
+        Solong ist dein digitaler Nachlass – damit deine Liebsten in der schwersten Zeit nicht allein gelassen werden. Dokumente, Wünsche, Erinnerungen und mehr – sicher hinterlegt, einfühlsam aufbereitet.
+      </p>
+      <div style="display:flex;flex-wrap:wrap;gap:.75rem;justify-content:center;">
+        <a href="#features" style="display:inline-flex;align-items:center;gap:.5rem;background:var(--green-mid);color:#fff;font-weight:600;font-size:.95rem;padding:.8rem 1.75rem;border-radius:.4rem;letter-spacing:.01em;">
+          Funktionen entdecken →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────── Trust bar ───────── -->
+  <div class="trust-bar">
+    <div class="container trust-bar-inner">
+      <div class="trust-item">
+        <div class="icon">🔒</div>
+        Ende-zu-Ende-Verschlüsselung
+      </div>
+      <div class="trust-item">
+        <div class="icon">🇩🇪</div>
+        Server in Deutschland
+      </div>
+      <div class="trust-item">
+        <div class="icon">⚖️</div>
+        Rechtlich begleitet
+      </div>
+      <div class="trust-item">
+        <div class="icon">✓</div>
+        DSGVO-konform
+      </div>
+      <div class="trust-item">
+        <div class="icon">🤝</div>
+        Keine Werbung
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────── Empathy / Problem ───────── -->
+  <section class="section">
+    <div class="container">
+      <div class="empathy">
+        <div class="section-label">Warum Solong?</div>
+        <h2 class="section-title">Weil der Abschied<br>kein Chaos hinterlassen sollte.</h2>
+        <p class="section-sub">
+          Ein Todesfall stürzt Hinterbliebene oft in eine Flut von bürokratischen Aufgaben –
+          mitten in der Trauer. Wo ist der Versicherungsvertrag? Was waren die letzten Wünsche?
+          Wer soll informiert werden? Solong gibt dir die Möglichkeit, heute Klarheit zu schaffen –
+          und deinen Liebsten morgen den Rücken zu stärken.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────── Features ───────── -->
+  <section class="section section--alt" id="features">
+    <div class="container">
+      <div class="section-label" style="text-align:center;">Was Solong kann</div>
+      <h2 class="section-title" style="text-align:center;">Alles, was zählt – an einem Ort.</h2>
+
+      <div class="features-grid">
+
+        <div class="feature-card">
+          <div class="feature-icon">📄</div>
+          <h3>Wichtige Dokumente</h3>
+          <p>Hinterlege alle relevanten Unterlagen sicher: Versicherungspolicen, Bankdaten, Testament, Grundbuchauszüge und mehr. Deine Liebsten finden alles auf einen Blick.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🏛️</div>
+          <h3>Nachlass verwalten</h3>
+          <p>Pflege deinen Nachlass strukturiert: Vermögenswerte, Verbindlichkeiten, Kontakte zu Anwälten oder Steuerberatern – alles klar dokumentiert.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🫀</div>
+          <h3>Gesundheitliche Verfügungen</h3>
+          <p>Hinterlege deine Patientenverfügung, deinen Organspendeausweis und Vorsorgevollmacht – damit dein Wille in jeder Situation klar ist.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🕊️</div>
+          <h3>Beisetzungswünsche</h3>
+          <p>Halte fest, wie du in Erinnerung bleiben möchtest – Trauerfeier, Musik, Bestattungsart, besondere Wünsche. Damit deine Liebsten genau das umsetzen können, was dir wichtig war.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">📖</div>
+          <h3>Persönliches Erinnerungsbuch</h3>
+          <p>Erstelle ein digitales Vermächtnis: Fotos, Videos, Texte, Briefe – alles, was du der Nachwelt hinterlassen möchtest. Deine Geschichte, in deinen Worten.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🔐</div>
+          <h3>Sicherer Zugang für Hinterbliebene</h3>
+          <p>Ein einzigartiger Profilcode kombiniert mit einer persönlichen Sicherheitsfrage – so gelangt nur die richtige Person an deine Informationen.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────── How it works ───────── -->
+  <section class="section">
+    <div class="container">
+      <div class="section-label" style="text-align:center;">So einfach funktioniert's</div>
+      <h2 class="section-title" style="text-align:center;">In drei Schritten<br>zur Vorsorge.</h2>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <h3>Profil anlegen</h3>
+          <p>Erstelle dein persönliches Solong-Profil – in wenigen Minuten und ganz in deinem Tempo.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <h3>Alles hinterlegen</h3>
+          <p>Lade Dokumente hoch, fülle Rubriken aus, schreibe Briefe – so viel oder so wenig du möchtest.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <h3>Code weitergeben</h3>
+          <p>Teile deinen persönlichen Profilcode mit einer Vertrauensperson – für den Ernstfall.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <h3>Hinterbliebene erhalten Zugang</h3>
+          <p>Mit Code und Sicherheitsfrage greifen deine Liebsten sicher und einfühlsam auf alles zu.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────── Hilfebereich Hinweis ───────── -->
+  <section class="section section--alt">
+    <div class="container">
+      <div style="max-width:680px;margin-inline:auto;text-align:center;">
+        <div class="section-label">Für Hinterbliebene</div>
+        <h2 class="section-title">Orientierung in der schwersten Zeit.</h2>
+        <p class="section-sub">
+          Solong bietet nicht nur Vorsorge für dich – sondern auch aktive Unterstützung für deine Hinterbliebenen. Ein integrierter Hilfebereich führt sie Schritt für Schritt durch alles, was nach einem Todesfall geregelt werden muss: von der Sterbeurkunde über Versicherungen bis hin zur langfristigen Nachlassabwicklung. Mit praktischen Checklisten, klaren Erklärungen und dem Überblick über alle wichtigen Fristen.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────── Bereaved access ───────── -->
+  <section class="section section--alt">
+    <div class="container">
+      <div class="access-card">
+        <div>
+          <div class="section-label" style="color:var(--green-light);margin-bottom:.75rem;">Für Hinterbliebene</div>
+          <h2>Orientierung in der schwersten Zeit.</h2>
+          <p>
+            Wenn ein geliebter Mensch geht, steht die Welt still – und trotzdem muss vieles geregelt werden.
+            Solong gibt Hinterbliebenen einen ruhigen, geordneten Zugang zu allem, was sie brauchen.
+            Keine vergebliche Suche in Aktenschränken. Kein Rätselraten über letzte Wünsche.
+          </p>
+        </div>
+        <div class="access-steps">
+          <div class="access-step">
+            <div class="num">1</div>
+            <div class="text">
+              <strong>Profilcode eingeben</strong>
+              <span>Der eindeutige Code, den die Person hinterlassen hat</span>
+            </div>
+          </div>
+          <div class="access-step">
+            <div class="num">2</div>
+            <div class="text">
+              <strong>Sicherheitsfrage beantworten</strong>
+              <span>Persönliche Frage zum Schutz vor unberechtigtem Zugriff</span>
+            </div>
+          </div>
+          <div class="access-step">
+            <div class="num">3</div>
+            <div class="text">
+              <strong>Alles auf einen Blick</strong>
+              <span>Dokumente, Wünsche, Erinnerungen – klar strukturiert</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────── Privacy & Legal ───────── -->
+  <section class="section">
+    <div class="container">
+      <div class="section-label" style="text-align:center;">Datenschutz & Sicherheit</div>
+      <h2 class="section-title" style="text-align:center;">Deine Daten.<br>Nur deine Daten.</h2>
+      <p class="section-sub" style="text-align:center;max-width:560px;margin-inline:auto;">
+        Bei Solong ist Vertrauen keine Selbstverständlichkeit – es ist das Fundament.
+        Wir gehen beim Datenschutz keine Kompromisse ein.
+      </p>
+
+      <div class="privacy-grid">
+
+        <div class="privacy-card">
+          <div class="pill">🔒 Verschlüsselung</div>
+          <h3>Ende-zu-Ende-Verschlüsselung</h3>
+          <p>Alle deine Dokumente und Daten werden verschlüsselt gespeichert und übertragen. Nicht einmal wir können auf deine Inhalte zugreifen.</p>
+        </div>
+
+        <div class="privacy-card">
+          <div class="pill">🇩🇪 DSGVO</div>
+          <h3>Vollständig DSGVO-konform</h3>
+          <p>Solong wurde von Grund auf DSGVO-konform entwickelt. Alle Server stehen in Deutschland. Keine Daten außerhalb der EU.</p>
+        </div>
+
+        <div class="privacy-card">
+          <div class="pill">⚖️ Juristisch</div>
+          <h3>Rechtlich begleitet</h3>
+          <p>Die Plattform ist in enger Zusammenarbeit mit Rechtsexperten entstanden. Wir stellen sicher, dass dein digitaler Nachlass rechtssicher hinterlegt ist.</p>
+        </div>
+
+        <div class="privacy-card">
+          <div class="pill">👁️ Kontrolle</div>
+          <h3>Du behältst die Kontrolle</h3>
+          <p>Du entscheidest, wer Zugang erhält. Du kannst Inhalte jederzeit aktualisieren, einschränken oder löschen. Deine Daten gehören dir.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────── Final CTA ───────── -->
+  <div class="container">
+    <div class="cta-section">
+      <h2>Bereit, für deine Liebsten vorzusorgen?</h2>
+      <p>Solong ist dein digitaler Nachlass – sicher, einfühlsam und rechtlich begleitet.</p>
+      <a href="#features" style="display:inline-flex;align-items:center;gap:.5rem;background:var(--green-soft);color:var(--green-dark);font-weight:800;font-size:.95rem;padding:.85rem 2rem;border-radius:99px;text-decoration:none;">
+        Alle Funktionen entdecken →
+      </a>
+    </div>
+  </div>
+
+  <!-- ───────── Footer ───────── -->
+  <footer>
+    <div class="container footer-inner">
+      <div class="footer-logo">Solong</div>
+      <div style="font-size:.8rem;color:var(--gray-muted);">
+        © 2026 Solong. Alle Rechte vorbehalten.
+      </div>
+      <div class="footer-links">
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="impressum.html">Impressum</a>
+        <a href="mailto:info@solong.app">Kontakt</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ── Analytics helper ──
+    function track(eventName, props) {
+      if (typeof plausible === 'function') {
+        plausible(eventName, { props: props || {} });
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // Features-Link im Hero tracken
+      const featuresLink = document.querySelector('a[href="#features"]');
+      if (featuresLink) {
+        featuresLink.addEventListener('click', function() {
+          track('Hero Feature Click');
+        });
+      }
+
+      // Scroll-Tiefe tracken (25 / 50 / 75 / 100 %)
+      const depths = { 25: false, 50: false, 75: false, 100: false };
+      window.addEventListener('scroll', function() {
+        const scrolled = (window.scrollY + window.innerHeight) / document.body.scrollHeight * 100;
+        for (const depth in depths) {
+          if (!depths[depth] && scrolled >= depth) {
+            depths[depth] = true;
+            track('Scroll Depth', { percent: depth + '%' });
+          }
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
